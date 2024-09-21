@@ -43,12 +43,12 @@ public class AppConfig {
             CorsConfiguration cfg=new CorsConfiguration();
             cfg.setAllowedOrigins(Arrays.asList(
                     "https://foodorder.app/",
-                    "https://localhost:3000"
+                    "http://localhost:3000"
             ));
             cfg.setAllowedMethods(Collections.singletonList("*"));
             cfg.setAllowCredentials(true);
             cfg.setAllowedHeaders(Collections.singletonList("*"));
-            cfg.setExposedHeaders(Arrays.asList("Authorizetion"));
+            cfg.setExposedHeaders(Arrays.asList("Authorization"));
             cfg.setMaxAge(3600L);
                 return cfg;
             }
