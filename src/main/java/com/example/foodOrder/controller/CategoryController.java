@@ -19,7 +19,7 @@ public class CategoryController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("admin/category")
+    @PostMapping("/admin/category")
     public ResponseEntity<Category> createCategory(@RequestBody Category category,
                                                    @RequestHeader("Authorization") String jwt
                                                    ) throws Exception {
@@ -28,12 +28,13 @@ public class CategoryController {
         return new ResponseEntity<>(category1, HttpStatus.CREATED);
     }
 
-    @GetMapping("/category/restaurant")
-    public ResponseEntity<List<Category>> getRestaurantCategory(@RequestBody Category category,
+    @GetMapping("/category/restaurant/{id}")
+    public ResponseEntity<List<Category>> getRestaurantCategory(
+            @PathVariable Long id,
                                                    @RequestHeader("Authorization") String jwt
     ) throws Exception {
         User user= userService.findUserByJwtToken(jwt);
-        List<Category> categories=categoryService.findCategoryRestaurantId(user.getId());
+        List<Category> categories=categoryService.findCategoryRestaurantId(id);
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 

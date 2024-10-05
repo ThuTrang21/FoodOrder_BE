@@ -41,7 +41,8 @@ public class RestaurantServiceImp implements RestaurantService {
         restaurant.setImages(req.getImages());
         restaurant.setOpeningHours(req.getOpeningHours());
         restaurant.setRegistrationDate(LocalDateTime.now());
-        restaurant.setOwner(user);
+        restaurant.setOpen(req.getOpen());
+        restaurant.setCustomer(user);
 
         return restaurantRepository.save(restaurant);
     }
@@ -107,7 +108,7 @@ public class RestaurantServiceImp implements RestaurantService {
 
     @Override
     public Restaurant getRestaurantByUserId(Long userId) throws Exception {
-        Restaurant restaurant=restaurantRepository.findByOwnerId(userId);
+        Restaurant restaurant=restaurantRepository.findByCustomerId(userId);
         if(restaurant==null){
             throw new Exception("restaurant not found with owner id "+ userId);
 

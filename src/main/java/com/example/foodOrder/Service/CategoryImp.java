@@ -33,7 +33,7 @@ public class CategoryImp implements CategoryService{
     @Override
     public List<Category> findCategoryRestaurantId(Long id) throws Exception {
        Restaurant restaurant=restaurantService.findRestaurantById(id);
-        return categoryRepository.findByRestaurantId(restaurant.getId());
+        return categoryRepository.findByRestaurantId(id);
     }
 
     @Override
