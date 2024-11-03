@@ -35,9 +35,9 @@ public class OrderController {
 
     @GetMapping("/order/user")
     public ResponseEntity<List<Order>> getOrderHistory(
-            @RequestBody OrderRequest req,
+
             @RequestHeader("Authorization") String jwt
-    ) throws Exception {
+    ) throws Exception{
         User user=userService.findUserByJwtToken(jwt);
         List<Order> orders=orderService.getUserOrder(user.getId());
         return new ResponseEntity<>(orders, HttpStatus.OK);
