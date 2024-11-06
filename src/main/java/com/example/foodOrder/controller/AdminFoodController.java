@@ -26,9 +26,9 @@ public class AdminFoodController {
     @PostMapping
     public ResponseEntity<Food> createFood(@RequestBody CreateFoodRequest req,
                                            @RequestHeader("Authorization") String jwt) throws Exception {
-        User user=userService.findUserByJwtToken(jwt);
-        Restaurant restaurant=restaurantService.findRestaurantById(req.getRestaurantId());
-        Food food=foodService.createFood(req, req.getCategory(),restaurant);
+        User user = userService.findUserByJwtToken(jwt);
+        Restaurant restaurant = restaurantService.getRestaurantByUserId(user.getId());
+        Food food = foodService.createFood(req, req.getFoodCategory(), restaurant);
 
         return new ResponseEntity<>(food, HttpStatus.CREATED);
     }
@@ -36,18 +36,18 @@ public class AdminFoodController {
     @DeleteMapping("/{id}")
     public ResponseEntity<MessageResponse> deleteFood(@PathVariable Long id,
                                                       @RequestHeader("Authorization") String jwt) throws Exception {
-        User user=userService.findUserByJwtToken(jwt);
-      foodService.deleteFood(id);
-MessageResponse res=new MessageResponse();
-res.setMessage("Food delete successfully");
+        User user = userService.findUserByJwtToken(jwt);
+        foodService.deleteFood(id);
+        MessageResponse res = new MessageResponse();
+        res.setMessage("Food delete successfully");
         return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Food> updateFoodAvailabilityStatus(@PathVariable Long id,
-                                           @RequestHeader("Authorization") String jwt) throws Exception {
-        User user=userService.findUserByJwtToken(jwt);
-        Food food=foodService.updateAvailabilityStatus(id);
+                                                             @RequestHeader("Authorization") String jwt) throws Exception {
+        User user = userService.findUserByJwtToken(jwt);
+        Food food = foodService.updateAvailabilityStatus(id);
 
         return new ResponseEntity<>(food, HttpStatus.CREATED);
     }

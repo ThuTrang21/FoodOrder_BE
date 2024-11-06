@@ -14,7 +14,7 @@ public class CreateFoodRequest {
     private String name;
     private String description;
     private Long price;
-    private Category category;
+    private Category foodCategory;
     private List<String> images;
     private boolean available;
     private Long restaurantId;
