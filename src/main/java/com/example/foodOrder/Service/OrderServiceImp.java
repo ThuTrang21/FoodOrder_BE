@@ -55,6 +55,7 @@ public class OrderServiceImp implements OrderService{
 
         Cart cart=cartService.findCartByUserId(user.getId());
 
+        int totalITem=0;
         List<OrderItem> orderItems=new ArrayList<>();
         for(CartItem cartItem: cart.getItem()){
             OrderItem orderItem=new OrderItem();
@@ -62,6 +63,7 @@ public class OrderServiceImp implements OrderService{
             orderItem.setIngredients(cartItem.getIngredients());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setTotalPrice(cartItem.getTotalPrice());
+            totalITem+=cartItem.getQuantity();
 
             OrderItem saveOrderItem=orderItemRepository.save(orderItem);
             orderItems.add(orderItem);
@@ -70,6 +72,8 @@ public class OrderServiceImp implements OrderService{
         Long totalPrice=cartService.calculateCartTotals(cart);
         createOrder.setItems(orderItems);
         createOrder.setTotalPrice(totalPrice);
+        createOrder.setTotalItem(totalITem);
+        createOrder.setTotalAmount(totalPrice+33+21);
 
         Order saveOrder=orderRepository.save(createOrder);
         restaurant.getOrders().add(saveOrder);

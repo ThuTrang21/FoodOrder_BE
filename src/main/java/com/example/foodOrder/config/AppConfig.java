@@ -24,16 +24,22 @@ public class AppConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
 
-        http.sessionManagement(managment ->managment.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(Authorize -> Authorize
-                        .requestMatchers("/api/admin/**").hasAnyRole("RESTAURANT_OWNER","ADMIN")
+        http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/admin/**").hasAnyRole("RESTAURANT_OWNER", "ADMIN")
+                        .requestMatchers("/api/restaurants").permitAll()
+                        .requestMatchers("/api/restaurants/**").permitAll()
+                        .requestMatchers("/api/category/restaurant/**").permitAll()
+                        .requestMatchers("/api/food/restaurant/**").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
-                ).addFilterBefore(new JwTokenValidator(), BasicAuthenticationFilter.class)
+                )
+                .addFilterBefore(new JwTokenValidator(), BasicAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
-                .cors(cors->cors.configurationSource(configurationSource()));
+                .cors(cors -> cors.configurationSource(configurationSource()));
 
-    return http.build();
+
+        return http.build();
     }
 
     private CorsConfigurationSource configurationSource() {
@@ -42,7 +48,6 @@ public class AppConfig {
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
             CorsConfiguration cfg=new CorsConfiguration();
             cfg.setAllowedOrigins(Arrays.asList(
-                    "https://foodorder.app/",
                     "http://localhost:3000"
             ));
             cfg.setAllowedMethods(Collections.singletonList("*"));

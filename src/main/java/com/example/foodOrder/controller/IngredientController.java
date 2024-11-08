@@ -1,6 +1,7 @@
 package com.example.foodOrder.controller;
 
 import com.example.foodOrder.Service.IngredientService;
+import com.example.foodOrder.Service.UserService;
 import com.example.foodOrder.model.IngredientsCategory;
 import com.example.foodOrder.model.IngredientsItem;
 import com.example.foodOrder.request.IngredientCategoryRequest;
@@ -17,9 +18,13 @@ import java.util.List;
 public class IngredientController {
     @Autowired
     private IngredientService ingredientService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/category")
-    public ResponseEntity<IngredientsCategory> createIngredientCategory(@RequestBody IngredientCategoryRequest req) throws Exception {
+    public ResponseEntity<IngredientsCategory> createIngredientCategory(@RequestBody IngredientCategoryRequest req,
+                                                                        @RequestHeader("Authorization") String jwt) throws Exception {
+        userService.findUserByJwtToken(jwt);
         IngredientsCategory category=ingredientService.createIngredientsCategory(req.getName(),req.getRestaurantId());
         return new ResponseEntity<>(category, HttpStatus.CREATED);
     }
